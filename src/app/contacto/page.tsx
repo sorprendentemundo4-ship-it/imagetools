@@ -1,0 +1,3 @@
+﻿import { contactEmail,metadataFor } from '@/lib/site';
+export const metadata=metadataFor('/contacto');
+export default function Contact(){const configured=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail);return <article className="container prose section"><h1>Hablemos de ImageTools</h1><p>Para comunicar un error, describe la herramienta, el navegador, los pasos y el mensaje que aparece. No envíes imágenes privadas ni información sensible.</p><h2>Canal de contacto</h2>{configured?<p><a href={'mailto:'+contactEmail}>{contactEmail}</a></p>:<p className="notice">PENDIENTE: configurar el correo público de contacto antes del lanzamiento. Todavía no hay un canal de envío habilitado.</p>}<p>No hay formularios ni recogida de mensajes dentro de la web.</p></article>;}

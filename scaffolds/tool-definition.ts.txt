@@ -1,0 +1,15 @@
+// Example structure only. Do not publish an unimplemented tool.
+// Add a real definition to tools in src/config/tools.ts when the implementation exists.
+{
+  slug: 'slug-descriptivo',
+  title: 'Título de la herramienta',
+  description: 'Descripción original y específica de su utilidad.',
+  categoryId: 'general',
+  symbol: 'T',
+  keywords: ['palabra relevante'],
+  readyToIndex: false,
+  explanation: 'Explica el funcionamiento y las hipótesis del modelo.',
+  example: 'Añade un ejemplo real y comprobado.',
+  limitations: 'Describe las limitaciones de la herramienta.',
+  faqs: [],
+}

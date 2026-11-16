@@ -1,0 +1,16 @@
+// Copy to src/app/herramientas/<slug>/page.tsx after registering the real tool.
+// This scaffold is not a route and contains no tool implementation.
+import { tools } from '@/config/tools';
+import { metadataFor, toolPath } from '@/lib/site';
+import { ToolLayout } from '@/components/tool-layout';
+// import { YourTool } from '@/components/tools/your-tool';
+
+const slug = 'slug-de-tu-herramienta';
+const tool = tools.find(item => item.slug === slug);
+if (!tool) throw new Error('Registra la herramienta antes de crear su página.');
+export const metadata = metadataFor(toolPath(slug));
+export default function Page() {
+  return <ToolLayout tool={tool!}>
+    {/* Add the real, validated client component here. */}
+  </ToolLayout>;
+}

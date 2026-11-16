@@ -23,6 +23,13 @@ const titles = new Set();
 for (const path of files) {
   const html = await readFile(path,'utf8');
   const name = relative(root,path).split(sep).join('/');
+  // Google's ownership file is a plain-text HTML asset, not a content page.
+  if (/^google[a-f0-9]+\.html$/.test(name)) {
+    assert.equal(html.trim(), 'google-site-verification: '+name, 'Verificación de Google intacta.');
+    assert.ok((await readFile(resolve('public',name))).equals(await readFile(path)), 'Verificación copiada sin cambios.');
+    console.log('OK verificación Google /'+name);
+    continue;
+  }
   if (name === '404.html' || name === '_not-found.html') continue;
   const route = name === 'index.html' ? '/' : '/' + name.replace(/\.html$/, '');
   assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1,'H1 único: '+route);

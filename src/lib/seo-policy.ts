@@ -15,3 +15,14 @@ export function publicOrigin(value: string | undefined): string | null {
 export function canIndex(origin: string | null, enabled: boolean, reviewed: boolean): boolean {
   return origin !== null && enabled && reviewed;
 }
+
+export function sitemapUrls(origin: string | null, enabled: boolean, pages: readonly { path: string; readyToIndex: boolean }[]): string[] {
+  if (!origin || !enabled) return [];
+  return pages.filter(page => page.readyToIndex).map(page => new URL(page.path, origin).href);
+}
+
+export function robotsPolicy(origin: string | null, enabled: boolean) {
+  return origin && enabled
+    ? { rules: { userAgent: '*', allow: '/' }, sitemap: origin + '/sitemap.xml' }
+    : { rules: { userAgent: '*', disallow: '/' } };
+}

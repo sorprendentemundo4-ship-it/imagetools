@@ -1,8 +1,7 @@
 import type { MetadataRoute } from 'next';
-import { indexablePages, siteUrl } from '@/lib/site';
+import { indexingEnabled, pages, siteUrl } from '@/lib/site';
+import { sitemapUrls } from '@/lib/seo-policy';
 export const dynamic = 'force-static';
 export default function sitemap(): MetadataRoute.Sitemap {
-  const origin = siteUrl;
-  if (!origin) return [];
-  return indexablePages.map(page => ({ url: new URL(page.path, origin).href }));
+  return sitemapUrls(siteUrl, indexingEnabled, pages).map(url => ({ url }));
 }

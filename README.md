@@ -34,13 +34,14 @@ La prueba de navegador necesita Microsoft Edge en su ruta habitual de Windows y 
 
 Entrada estática JPG, PNG y WebP: 30 MB, 32 MP y 16384 px por lado. Salida: 24 MP y 8192 px por lado. Las animaciones PNG/WebP se rechazan. HEIC, GIF y SVG no se admiten. Un dispositivo con poca memoria puede fallar antes de estos límites; se muestra un error. La decodificación inicial depende de los límites del navegador. La orientación EXIF se aplica mediante createImageBitmap. Canvas elimina metadatos y no garantiza conservar perfiles de color. JPG aplana sobre blanco. Las URLs temporales y bitmaps se liberan al sustituir archivos, reiniciar y desmontar el editor. No se envían los archivos a la red.
 
-## Antes de publicar en Cloudflare Pages
+## Publicación en Cloudflare Pages
 
-No se ha publicado. Build: npm run build. Directorio: out. No necesita servidor Node en producción.
+Dominio definitivo: https://imagetools-3sd.pages.dev/. Build: npm run build. Directorio: out. No necesita servidor Node en producción.
 
-1. Completar y revisar identidad del titular, contacto y documentos legales. Configurar NEXT_PUBLIC_CONTACT_EMAIL o src/config/site.ts.
-2. Configurar el dominio HTTPS real mediante NEXT_PUBLIC_SITE_URL o publicUrl.
-3. Tras revisar contenido, activar indexingEnabled en src/config/site.ts y volver a compilar. Hasta entonces todas las páginas usan noindex, robots bloquea el rastreo y sitemap no inventa URLs. Los canonical se generan cuando existe un dominio válido.
-4. Repetir comprobaciones en Safari, Firefox y dispositivos físicos con poca memoria. Los presets sociales son lienzos habituales, no requisitos oficiales garantizados.
+La activación SEO ha sido autorizada el 17/11/2026 y está aplicada en el código local: ocho páginas principales con index,follow, canonical absolutos, sitemap de ocho URLs y robots permitiendo rastreo. Contacto, privacidad y aviso legal mantienen noindex,follow por decisión editorial. Que el código esté preparado no confirma que el commit, push o despliegue hayan terminado: consultar docs/release-status.md.
+
+El responsable, correo y decisiones de conservación confirmados se configuran en src/config/site.ts. NEXT_PUBLIC_SITE_URL y NEXT_PUBLIC_CONTACT_EMAIL pueden sobrescribir sus valores durante el build; deben coincidir con el dominio y contacto definitivos. No se afirma cumplimiento legal certificado ni se atribuye un DPA a Gmail de consumo.
+
+Antes de incorporar AdSense o cambiar de proveedor, revisar privacidad, actividad e información legal y consentimiento aplicables. Quedan como comprobaciones adicionales Safari, Firefox y dispositivos físicos con poca memoria; los presets sociales son lienzos habituales, no requisitos oficiales garantizados.
 
 Los espacios AdSlot están vacíos y no cargan scripts. La monetización futura requiere revisar privacidad y consentimiento antes de integrar proveedores.

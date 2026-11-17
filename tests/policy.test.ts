@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import { publicOrigin, canIndex } from '../src/lib/seo-policy.ts';
 import { siteConfig } from '../src/config/site.ts';
 
-test('la plantilla empieza sin URL pública y sin indexación', () => {
-  assert.equal(siteConfig.publicUrl, '');
-  assert.equal(siteConfig.indexingEnabled, false);
-  assert.equal(publicOrigin(siteConfig.publicUrl), null);
+test('el lanzamiento autorizado usa el dominio definitivo', () => {
+  assert.equal(publicOrigin(siteConfig.publicUrl), 'https://imagetools-3sd.pages.dev');
+  assert.equal(siteConfig.indexingEnabled, true);
+  assert.equal(canIndex(publicOrigin(siteConfig.publicUrl), siteConfig.indexingEnabled, true), true);
+  assert.equal(canIndex(publicOrigin(siteConfig.publicUrl), false, true), false);
 });
 test('URL pública HTTPS válida y normalización del origen', () => {
   assert.equal(publicOrigin('https://mi-proyecto.pages.dev/'), 'https://mi-proyecto.pages.dev');

@@ -20,6 +20,7 @@ const canonical = home.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
 const origin = canonical ? new URL(canonical).origin : null;
 const expectedUrls = [];
 const titles = new Set();
+const descriptions = new Set();
 for (const path of files) {
   const html = await readFile(path,'utf8');
   const name = relative(root,path).split(sep).join('/');
@@ -34,6 +35,8 @@ for (const path of files) {
   const route = name === 'index.html' ? '/' : '/' + name.replace(/\.html$/, '');
   assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1,'H1 único: '+route);
   assert.match(html, /<meta name="description" content="[^"]+"/);
+  const description=html.match(/<meta name="description" content="([^"]+)"/)?.[1];
+  assert.ok(description && !descriptions.has(description),'Descripción única: '+route); descriptions.add(description);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   assert.ok(title && !titles.has(title),'Título único: '+route); titles.add(title);
   const pageCanonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
@@ -43,7 +46,10 @@ for (const path of files) {
     assert.equal(new URL(pageCanonical).pathname,route);
   } else assert.equal(pageCanonical, undefined, 'No inventar dominios: '+route);
   if (!enabled) assert.match(html, /<meta name="robots" content="noindex, nofollow"/);
-  if (!/content="noindex,/.test(html) && pageCanonical) expectedUrls.push(pageCanonical);
+  else if (['/contacto','/privacidad','/aviso-legal'].includes(route)) assert.match(html, /<meta name="robots" content="noindex, follow"/);
+  else assert.match(html, /<meta name="robots" content="index, follow"/);
+  // Next serializes the root canonical without a trailing slash; normalize URLs.
+  if (!/content="noindex,/.test(html) && pageCanonical) expectedUrls.push(new URL(pageCanonical).href);
   for (const match of html.matchAll(/(?:href|src)="(\/[^"#?]*)(?:[?#][^"]*)?"/g)) {
     const link=match[1];
     const resource=/\.[a-z0-9]+$/i.test(link) ? link : link==='/' ? '/index.html' : link+'.html';
@@ -59,6 +65,7 @@ const sitemap = await readFile(resolve(root,'sitemap.xml'),'utf8');
 const locations = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
 assert.doesNotMatch(sitemap, /<lastmod>/,'No inventar fechas.');
 if (enabled) {
+  assert.equal(expectedUrls.length,8,'El lanzamiento incluye exactamente ocho páginas indexables.');
   assert.match(robots,/Allow: \//);
   assert.ok(robots.includes('Sitemap: '+origin+'/sitemap.xml'));
   assert.deepEqual(locations.sort(),expectedUrls.sort());

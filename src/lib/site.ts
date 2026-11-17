@@ -5,9 +5,9 @@ import { publicOrigin, canIndex } from './seo-policy';
 import { validateCatalog } from './catalog';
 
 validateCatalog(tools, categories);
-export const siteUrl = publicOrigin(process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.publicUrl);
+export const siteUrl = publicOrigin(process.env.NEXT_PUBLIC_SITE_URL?.trim() || siteConfig.publicUrl);
 export const indexingEnabled = canIndex(siteUrl, siteConfig.indexingEnabled, true);
-export const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || siteConfig.contactEmail;
+export const contactEmail = (process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || siteConfig.contactEmail).trim();
 export const toolPath = (slug: string) => '/herramientas/' + slug;
 
 export const pages = [
